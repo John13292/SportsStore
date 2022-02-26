@@ -1,8 +1,11 @@
+using SportsStore.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddMvc();
+builder.Services.AddTransient<IProductRepository, FakeProductRepository>();
 
 var app = builder.Build();
 
@@ -18,6 +21,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseMvc(routes =>
+{
+    routes.MapRoute(
+        name: "default",
+        template: "{controller=Product}/{action=List}/{id?}");
+});
 
 app.UseAuthorization();
 
